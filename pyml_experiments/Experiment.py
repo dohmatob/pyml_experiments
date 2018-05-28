@@ -29,14 +29,13 @@ class Experiment(object):
     def add_value(self,key,value):
         if (len(self.current_scope)==0):
             self.values[key]=value
-        else:
-            dic=self.values
-            for i in range(len(self.current_scope)):
-                cs=self.current_scope[i]
-                if (not cs in dic):
-                    dic[cs]={}
-                dic=dic[cs]
-            dic[key]=value
+        dic=self.values
+        for i in range(len(self.current_scope)):
+            cs=self.current_scope[i]
+            if (not cs in dic):
+                dic[cs]={}
+            dic=dic[cs]
+        dic[key]=value
 
     def push_scope(self,scope):
         self.current_scope.append(scope)

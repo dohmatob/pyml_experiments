@@ -203,7 +203,10 @@ class Sqlite3Writer(Writer):
         kk={}
         for v in self._values:
             for k in v:
-                kk[k] = self._find_sqlite_type_for_variable(v[k])
+                if k == "model":
+                    kk[k] = "MODEL blob"
+                else:
+                    kk[k] = self._find_sqlite_type_for_variable(v[k])
         r=[]
         for k in kk:
             r.append((k,kk[k]))
@@ -253,8 +256,8 @@ class Sqlite3Writer(Writer):
             keys.append("_iteration")
             pos+=1
 
-            query="insert into logs (%s) values (%s)"%(",".join(keys),",".join(vals))
-            self.db.execute(query)
+            self.db.execute("insert into logs (%s) values (%s)" % (
+                ",".join(keys), ",".join(["?"] * len(vals))), vals)
         self.db.commit()
 
     def write(self,values):
