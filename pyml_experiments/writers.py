@@ -72,13 +72,12 @@ class StdoutWriter(Writer):
         logging.error(msg)
 
 class Sqlite3Writer(Writer):
-    def __init__(self,db_file,update_every=10,separator=".",verbose=0):
+    def __init__(self,db_file,update_every=10,separator="."):
         Writer.__init__(self)
         logging.info("Opening Sqlite3 DB : "+db_file)
         self.db=sqlite3.connect(db_file)
         self.db_file=db_file
         self.update_every=update_every
-        self.verbose = verbose
         self._values=[]
         self.sep=separator
         self._iteration=0
@@ -236,8 +235,6 @@ class Sqlite3Writer(Writer):
             if (not k1 in columns):
                 logging.info("-- adding column in SQL Table: %s %s "%(k1,k2))
                 query="alter table logs add column '%s' %s"%(k1,k2)
-                if self.verbose:
-                    print(query)
                 self.db.execute(query)
 
     def _flush_values(self):
