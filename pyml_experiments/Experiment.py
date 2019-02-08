@@ -1,6 +1,7 @@
 import datetime
 from . import writers
 
+
 class Experiment(object):
 
     def __init__(self,arguments={},writer=None):
